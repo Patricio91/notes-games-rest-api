@@ -92,7 +92,7 @@ export const signIn = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync();
     try {
         const { username, password } = req.body;
-        const user = User.findOne({where: {username: req.body.username}});
+        const user = await User.findOne({where: {username: req.body.username}});
         if (!user) {
             return res.status(400).send({message: "El usuario es incorrecto. Intente nuevamente"})
         }

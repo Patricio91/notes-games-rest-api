@@ -20,6 +20,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.9.1",
@@ -33,7 +34,14 @@
     "joi": "^17.7.0",
     "morgan": "^1.10.0"
   },
-  "include": ["src"],
-  "exclude": ["node_modules", ".env"],
-  "files": ["types.d.ts"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    ".env"
+  ],
+  "files": [
+    "types.d.ts"
+  ]
 }
