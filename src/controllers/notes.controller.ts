@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { not } from "joi";
 import { Note } from "../entities/Note";
 import { noteSchema, updateNoteSchema } from "../validators/noteSchema";
 
@@ -14,8 +13,8 @@ export const addNoteGame = async (req: Request, res: Response) => {
         note.year = year;
         note.price = price;
         note.console = console;
-        console.log(result);
         const savedNote = await note.save();
+        res.json(savedNote);
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});
