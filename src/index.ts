@@ -4,11 +4,11 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 const app = express();
-import gamesRoutes from "./routes/games.routes";
+import noteRoutes from "./routes/notes.routes";
 import authRoutes from "./routes/auth.routes";
 import { DataSource } from "typeorm";
-import { Game } from "./entities/Game";
 import { User } from "./entities/User";
+import { Note } from "./entities/Note";
 dotenv.config();
 
 // Middlewares
@@ -17,7 +17,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 // Routes
-app.use("/addGames", gamesRoutes);
+app.use("/addNoteGames", noteRoutes);
 app.use("/auth", authRoutes);
 
 // Database
@@ -30,7 +30,7 @@ export const AppDataSource = new DataSource({
     database: "games-database",
     synchronize: true,
     logging: true,
-    entities: [User, Game]
+    entities: [User, Note]
 })
 
 // Server

@@ -4,8 +4,10 @@ import {
     Column, 
     BaseEntity, 
     CreateDateColumn, 
-    UpdateDateColumn 
+    UpdateDateColumn, 
+    OneToMany
 } from "typeorm";
+import { Note } from "./Note";
 
 export interface IUser extends Document {
     firstname: string;
@@ -44,4 +46,7 @@ export class User extends BaseEntity {
 
     @UpdateDateColumn()
     updated_at!: Date;
+
+    @OneToMany(()=> Note, (note) => note.user)
+    notes!: Note[];
 }
