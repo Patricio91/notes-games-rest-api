@@ -5,8 +5,10 @@ import cors from "cors";
 import morgan from "morgan";
 const app = express();
 import gamesRoutes from "./routes/games.routes";
+import authRoutes from "./routes/auth.routes";
 import { DataSource } from "typeorm";
 import { Game } from "./entities/Game";
+import { User } from "./entities/User";
 dotenv.config();
 
 // Middlewares
@@ -16,6 +18,7 @@ app.use(express.json());
 
 // Routes
 app.use("/addGames", gamesRoutes);
+app.use("/auth", authRoutes);
 
 // Database
 export const AppDataSource = new DataSource({
@@ -27,19 +30,16 @@ export const AppDataSource = new DataSource({
     database: "games-database",
     synchronize: true,
     logging: true,
-    entities: [Game]
+    entities: [User, Game]
 })
 
 // Server
 async function main() {
     try {
         await AppDataSource.initialize();
-        console.log("--------------------------------");
         console.log("Database connected in MySQL");
-        console.log("--------------------------------");
         app.listen(8080);
         console.log("Server is listening on port", 8080);
-        console.log("--------------------------------");
     } catch (error) {
         console.log("Error. Something wrong here");
         console.log(error);
