@@ -7,3 +7,5 @@ router.get("getUsers", isAdmin, getAllUser);
 router.get("/getUser", isAdmin, getUser);
 router.put("/updateUser", isUser, updateUser);
 router.delete("/deleteUser", isUser, deleteUser);
+
+export default router;

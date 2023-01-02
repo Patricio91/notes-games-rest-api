@@ -5,6 +5,7 @@ const app = express();
 import cors from "cors";
 import morgan from "morgan";
 import noteRoutes from "./routes/notes.routes";
+import usersRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
 import { DataSource } from "typeorm";
 import { User } from "./entities/User";
@@ -18,6 +19,7 @@ app.use(express.json());
 
 // Routes
 app.use("/addNoteGames", noteRoutes);
+app.use("/users", usersRoutes);
 app.use("/auth", authRoutes);
 
 // Database
