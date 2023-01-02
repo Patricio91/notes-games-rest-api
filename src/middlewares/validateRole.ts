@@ -24,3 +24,20 @@ export const isUser = (req: Request, res: Response, next: NextFunction) => {
         res.status(401).json("Token no válido. Acceso denegado");
     }
 }
+
+export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+    const token = req.header("auth-header");
+    try {
+        if (!token) return res.status(401).json("No hay token en la petición. Acceso denegado");
+        const payload = jwt.verify(token, process.env.SECRET_TOKEN || "token_test_games") as IPayload;
+        req.userId = payload.id;
+        req.userRole = payload.role;
+        if (req.userRole == "ADMIN_ROLE") {
+            next();
+        } else {
+            res.status(401).json("Usted no es administrador. Acceso denegado");
+        }
+    } catch (error) {
+        res.status(401).json("Token no válido. Acceso denegado")
+    }
+}

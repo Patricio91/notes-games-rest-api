@@ -1,9 +1,9 @@
 import "reflect-metadata";
 import dotenv from "dotenv";
 import express from "express";
+const app = express();
 import cors from "cors";
 import morgan from "morgan";
-const app = express();
 import noteRoutes from "./routes/notes.routes";
 import authRoutes from "./routes/auth.routes";
 import { DataSource } from "typeorm";
