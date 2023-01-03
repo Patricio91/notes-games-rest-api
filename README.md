@@ -1,5 +1,5 @@
-# rest-api-games
-Una RestAPI hecha con TypeScript que es para anotar juegos que un usuario quiera comprar en un futuro. Como una "To Do List" pero enfocado a juegos, con su precio, titulo, consola, etc 
+# REST-API-NOTES-GAMES
+Una RestAPI hecha con TypeScript que es para anotar juegos que un usuario quiera comprar en un futuro. Como una "To Do List" pero enfocado a juegos, con su precio, titulo, consola, link al juego, etc 
 
 Para todas las rutas menos la de signUp y singIn es necesario el token del user, el cual se obtiene de los headers como "auth-header".
 
