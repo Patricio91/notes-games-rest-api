@@ -18,7 +18,7 @@ export const signUp = async (req: Request, res: Response) => {
         user.email = email;
         user.password = bcrypt.hashSync(password, salt);
         const savedUser = await user.save();
-        res.status(200).send({message: "Usuario creado correctamente"});
+        res.status(200).send({message: `Cuenta creada. Bienvenido usuario ${username}`});
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});
