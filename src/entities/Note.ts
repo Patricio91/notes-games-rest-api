@@ -5,9 +5,9 @@ import {
     BaseEntity, 
     CreateDateColumn, 
     UpdateDateColumn, 
-    ManyToOne
+    ManyToOne,
+    JoinColumn
 } from "typeorm";
-import { NotEmittedStatement } from "typescript";
 import { User } from "./User";
 
 
@@ -31,6 +31,12 @@ export class Note extends BaseEntity {
     @Column()
     year!: number;
 
+    @Column({unique: true})
+    link!: string;
+
+    @Column()
+    user_id!: number;
+
     @CreateDateColumn()
     created_at!: Date;
 
@@ -38,5 +44,6 @@ export class Note extends BaseEntity {
     updated_at!: Date;
 
     @ManyToOne(() => User, (user) => user.notes)
+    @JoinColumn({name: "user_id"})
     user!: User;
 }

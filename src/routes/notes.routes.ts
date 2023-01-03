@@ -5,8 +5,8 @@ const router = Router();
 
 router.post("/addNoteGame", isUser, addNoteGame);
 router.get("/getNotes", isUser, getAllNotes);
-router.get("/getNote", isUser, getNote);
-router.put("/updateNote", isUser, updateNote);
-router.delete("deleteNote", isUser, deleteNote);
+router.get("/getNote/:id", isUser, getNote);
+router.put("/updateNote/:id", isUser, updateNote);
+router.delete("/deleteNote/:id", isUser, deleteNote);
 
 export default router;

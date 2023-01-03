@@ -5,16 +5,18 @@ import { noteSchema, updateNoteSchema } from "../validators/noteSchema";
 // POST
 export const addNoteGame = async (req: Request, res: Response) => {
     try {
-        const { game_name, description, year, price, console } = req.body;
-        const result = await noteSchema.validateAsync(req.body);
+        const { game_name, description, year, price, console, link, user_id } = req.body;
+        const saveNote = await noteSchema.validateAsync(req.body);
         const note = new Note();
         note.game_name = game_name;
         note.description = description;
         note.year = year;
         note.price = price;
         note.console = console;
+        note.link = link;
+        note.user_id = user_id;
         const savedNote = await note.save();
-        res.json(savedNote);
+        return res.json(savedNote);
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});
@@ -51,7 +53,7 @@ export const getNote = async (req: Request, res: Response) => {
 export const updateNote = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const { game_name, description, price,console, year } = req.body;
+        const { game_name, description, price,console, year, link } = req.body;
         const note = await Note.findOneBy({id: parseInt(req.params.id)});
         if (!note) return res.status(404).send({message: "La nota que busca no existe"});
         const updateNote = await updateNoteSchema.validateAsync(req.body);
@@ -60,8 +62,9 @@ export const updateNote = async (req: Request, res: Response) => {
         note.price = price;
         note.console = console;
         note.year = year;
+        note.link = link;
         const savedNote = await note.save();
-        res.status(200).json(savedNote);
+        return res.status(200).json(savedNote);
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});

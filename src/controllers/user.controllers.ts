@@ -56,12 +56,13 @@ export const updateUser = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync();
     try {
         const { id } = req.params;
-        const { username, password } = req.body;
+        const { username, password, email } = req.body;
         const user = await User.findOneBy({id: parseInt(req.params.id)});
         if (!user) return res.status(404).send({message: "El usuario no existe"});
         const updateUser = await UpdateUserSchema.validateAsync(req.body);
         user.username = username;
         user.password = bcrypt.hashSync(password, salt);
+        user.email = email;
         const saveUser = await user.save();
         res.status(200).send({message: "El usuario fue actualizado correctamente"});
     } catch (error) {
@@ -103,7 +104,7 @@ export const signIn = async (req: Request, res: Response) => {
         const token = jwt.sign({id: user.id, role: user.role}, process.env.SECRET_TOKEN || "token_test_games", {
             expiresIn: "24h"
         });
-        res.header("auth-header", token).send({message: "Sesión iniciada correctamente"});
+        res.json({user, token});
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).send({message: error.message});
