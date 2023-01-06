@@ -28,6 +28,7 @@ export const addNoteGame = async (req: Request, res: Response) => {
 export const getAllNotes = async (req: Request, res: Response) => {
     try {
         const notes = await Note.find();
+        if (notes.length === 0) return res.status(404).send({message: "No hay lista de notas aún"});
         return res.json(notes);
     } catch (error) {
         if (error instanceof Error) {
@@ -40,7 +41,7 @@ export const getAllNotes = async (req: Request, res: Response) => {
 export const getNote = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const note = await Note.findBy({id: parseInt(req.params.id)});
+        const note = await Note.findOneByOrFail({id: parseInt(req.params.id)});
         return res.json(note);
     } catch (error) {
         if (error instanceof Error) {

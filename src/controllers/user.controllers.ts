@@ -30,6 +30,7 @@ export const signUp = async (req: Request, res: Response) => {
 export const getAllUser = async (req: Request, res: Response) => {
     try {
         const users = await User.find();
+        if (users.length === 0) return res.status(404).send({message: "No hay lista de users aún"});
         return res.json(users);
     } catch (error) {
         if (error instanceof Error) {
