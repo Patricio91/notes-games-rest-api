@@ -41,3 +41,5 @@ Actulizar usuario: Solo se puede actualizar el username y la contraseña
 Borrar usuario por Id:
 ![image](https://user-images.githubusercontent.com/76538747/210366705-61a48329-f366-42f7-8f9f-7b050f68c46a.png)
 
+Diagrama de la DB:
+![image](https://user-images.githubusercontent.com/76538747/210915780-3f2146b4-b394-4de8-acdb-83779a6b6373.png)
