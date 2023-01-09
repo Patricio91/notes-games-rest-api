@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { getAllUser, getUser, updateUser, deleteUser } from "../controllers/user.controllers";
-import { isUser, isAdmin } from "../middlewares/validateRole";
+import { isUser, isAdmin } from "../middlewares/validateRoleToken";
 const router = Router();
 
-router.get("/getUsers", isAdmin, getAllUser);
-router.get("/getUser/:id", isAdmin, getUser);
-router.put("/updateUser/:id", isUser, updateUser);
-router.delete("/deleteUser/:id", isUser, deleteUser);
+router.get("/user", isAdmin, getAllUser);
+router.get("/user/:id", isAdmin, getUser);
+router.put("/user/:id", isUser, updateUser);
+router.delete("/user/:id", isUser, deleteUser);
 
 export default router;
