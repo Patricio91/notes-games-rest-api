@@ -1,6 +1,6 @@
 import { Router} from "express";
 import { addNoteGame, getNote, getAllNotes, deleteNote, updateNote } from "../controllers/notes.controller";
-import { isUser } from "../middlewares/validateRoleToken";
+import { isUser } from "../middlewares/validateRole";
 const router = Router();
 
 router.post("/note", isUser, addNoteGame);

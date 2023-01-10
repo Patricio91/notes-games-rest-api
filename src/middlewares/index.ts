@@ -1,4 +1,4 @@
-import * as isUser from "./validateRoleToken";
-import * as isAdmin from "./validateRoleToken";
+import * as isUser from "./validateRole";
+import * as isAdmin from "./validateRole";
 
 export { isUser, isAdmin };
