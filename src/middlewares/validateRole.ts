@@ -1,12 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-
-export interface IPayload {
-    id: string;
-    role: string;
-    iat: number;
-    exp: number;
-}
+import { IPayload } from "./index";
 
 export const isUser = (req: Request, res: Response, next: NextFunction) => {
     const token = req.header("auth-header");
