@@ -16,7 +16,7 @@ app.use(express.json());
 // ROUTES
 app.use("/api", noteRoutes);
 app.use("/api", usersRoutes);
-app.use("/api", authRoutes);
+app.use("/api/auth", authRoutes);
 app.use((req, res, next) => { res.status(404).json({message: "404 - Page not found"}) });
 
 // SERVER
