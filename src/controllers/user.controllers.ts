@@ -10,18 +10,18 @@ export const signUp = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync();
     try {
         const { firstname, lastname, username, email, password } = req.body;
-        const user = new User();
-        const validateUser = await UserSchema.validateAsync(req.body);
+        const user: User = new User();
+        await UserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.username = username;
         user.email = email;
         user.password = bcrypt.hashSync(password, salt);
-        const savedUser = await user.save();
-        res.status(200).send({message: `Cuenta creada. Bienvenido usuario ${username}`});
+        await user.save();
+        res.status(201).send({ message: `Cuenta creada. Bienvenido usuario ${username}` });
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({message: error.message});
+            return res.status(500).json({ message: error.message });
         }
     }
 }
@@ -29,12 +29,12 @@ export const signUp = async (req: Request, res: Response) => {
 // GET
 export const getAllUser = async (req: Request, res: Response) => {
     try {
-        const users = await User.find();
-        if (users.length === 0) return res.status(404).send({message: "No hay lista de users aún"});
-        return res.json(users);
+        const users: User[] = await User.find();
+        if (users.length === 0) return res.status(404).send({ message: "Aún no hay usuarios registrados" });
+        return res.status(200).json(users);
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({message: error.message});
+            return res.status(500).json({ message: error.message });
         }
     }
 }
@@ -43,11 +43,12 @@ export const getAllUser = async (req: Request, res: Response) => {
 export const getUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const user = await User.findBy({id: parseInt(req.params.id)});
-        return res.json(user);
+        const user: User | null = await User.findOneBy({ id: parseInt(id) });
+        if (!user || user === null) return res.status(404).json({ message: `El usuario con ID ${id} no existe` });
+        return res.status(200).json(user);
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({message: error.message});
+            return res.status(500).json({ message: error.message });
         }
     }
 }
@@ -58,17 +59,17 @@ export const updateUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const { username, password, email } = req.body;
-        const user = await User.findOneBy({id: parseInt(req.params.id)});
-        if (!user) return res.status(404).send({message: "El usuario no existe"});
-        const updateUser = await UpdateUserSchema.validateAsync(req.body);
+        const user: User | null = await User.findOneBy({ id: parseInt(id) });
+        if (!user || user === null) return res.status(404).send({ message: "El usuario no existe" });
+        await UpdateUserSchema.validateAsync(req.body);
         user.username = username;
         user.password = bcrypt.hashSync(password, salt);
         user.email = email;
-        const saveUser = await user.save();
-        res.status(200).send({message: "El usuario fue actualizado correctamente"});
+        await user.save();
+        res.status(200).send({ message: "El usuario fue actualizado correctamente" });
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({message: error.message});
+            return res.status(500).json({ message: error.message });
         }
     }
 }
@@ -77,14 +78,14 @@ export const updateUser = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const deleteUser = await User.delete({id: parseInt(id)});
+        const deleteUser = await User.delete({ id: parseInt(id) });
         if (deleteUser.affected === 0) {
-            return res.status(404).json({message: "Usuario no encontrado o incorrecto. Intente nuevamente"})
+            return res.status(404).json({ message: "Usuario no encontrado o incorrecto. Intente nuevamente" })
         }
-        return res.status(200).send({message: "Usuario borrado exitosamente. Hasta luego"});
+        return res.status(200).send({ message: "Usuario borrado exitosamente. Hasta luego" });
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({message: error.message});
+            return res.status(500).json({ message: error.message });
         }
     }
 }
@@ -94,21 +95,21 @@ export const signIn = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync();
     try {
         const { username, password } = req.body;
-        const user = await User.findOne({where: {username: req.body.username}});
-        if (!user) {
-            return res.status(400).send({message: "El usuario es incorrecto. Intente nuevamente"})
+        const user: User | null = await User.findOne({ where: { username: req.body.username } });
+        if (!user || user === null) {
+            return res.status(400).send({ message: "El usuario es incorrecto. Intente nuevamente" })
         }
-        const validatePassword = await bcrypt.compare(password, user.password);
+        const validatePassword: boolean = await bcrypt.compare(password, user.password);
         if (!validatePassword) {
-            return res.status(400).send({message: "Contraseña incorrecta. Intente nuevamente"});
+            return res.status(400).send({ message: "Contraseña incorrecta. Intente nuevamente" });
         }
-        const token = jwt.sign({id: user.id, role: user.role}, process.env.SECRET_TOKEN || "token_test_games", {
+        const token: string = jwt.sign({ id: user.id, role: user.role }, process.env.SECRET_TOKEN || "token_test_games", {
             expiresIn: "24h"
         });
-        res.json({user, token});
+        res.status(200).json({ user, token });
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).send({message: error.message});
+            return res.status(500).send({ message: error.message });
         }
     }
 }
